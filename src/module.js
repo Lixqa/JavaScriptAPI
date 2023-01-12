@@ -15,7 +15,7 @@ async function sendApi(parameters) {
     .then(response => {
       result = response.data;
 
-      if(parameters.url.contains("api.lixqa.de")) {
+      if(parameters.url.includes("api.lixqa.de")) {
         logger.logByOptions({ //only compatible with lixqa api
           message: "Message: " + chalk.underline.bold(result.message) +
           "\nName: " + chalk.underline.bold(result.endpoint.name) +
