@@ -26,7 +26,7 @@ async function sendApi(parameters) {
           outerSpace: true,
           baseColor: (result.error) ? chalk.red : chalk.green,
           borderChar: "-",
-          borderCharLength: 20
+          borderCharLength: -1
         });
       }
     })
