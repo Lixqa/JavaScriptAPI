@@ -17,11 +17,11 @@ async function sendApi(parameters) {
 
       if(parameters.url.includes("api.lixqa.de")) {
         logger.logByOptions({ //only compatible with lixqa api
-          message: "Message: " + chalk.underline.bold(result.message) +
-          "\nName: " + chalk.underline.bold(result.endpoint.name) +
+          message: "Message: " + chalk.underline.bold(result?.message) +
+          "\nName: " + chalk.underline.bold(result?.endpoint?.name) +
           "\nRequest duration: " + chalk.underline.bold((new Date().getTime() - responseStartDate)) + "ms" +
-          "\nIntern handle duration: " + chalk.underline.bold(result.duration) + "ms" +
-          "\nMethod: " + chalk.underline.bold(result.method),
+          "\nIntern handle duration: " + chalk.underline.bold(result?.duration) + "ms" +
+          "\nMethod: " + chalk.underline.bold(result?.method),
           name: "API",
           outerSpace: true,
           baseColor: (result.error) ? chalk.red : chalk.green,
