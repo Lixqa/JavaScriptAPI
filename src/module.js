@@ -8,7 +8,10 @@ async function sendApi(parameters, options = {}) {
     let headers = parameters.headers || {};
     let body = (parameters.body) ? JSON.stringify(parameters.body) : null;
 
-    let showError = options.showError || false;
+    let showError = options.showError || true;
+    let showDetailedError = options.showDetailedError || false;
+
+    console.log(showError, showDetailedError);
 
     if(url == null) {
       logger.logByOptions({
@@ -22,6 +25,7 @@ async function sendApi(parameters, options = {}) {
       return;
     }
     let responseStartDate = new Date().getTime();
+    let bodyStr = (body) ? chalk.underline.bold.green("true") : chalk.underline.bold.red("false");
     let result;
 
     await axios({
@@ -32,7 +36,6 @@ async function sendApi(parameters, options = {}) {
     })
     .then(response => {
       result = response.data;
-      let bodyStr = (body) ? chalk.underline.bold.green("true") : chalk.underline.bold.red("false");
 
       if(parameters.url.includes("api.lixqa.de")) {
         logger.logByOptions({ //only compatible with lixqa api
@@ -54,18 +57,36 @@ async function sendApi(parameters, options = {}) {
           message: "URL: " + chalk.underline.bold(url) +
           "\nMethod: " + chalk.underline.bold(method) +
           "\nRequest duration: " + chalk.underline.bold((new Date().getTime() - responseStartDate)) + "ms" +
-          "\nHeaders: " + chalk.underline.bold(headers.size) +
+          "\nHeaders: " + chalk.underline.bold(Object.entries(headers).length) +
           "\nBody: " + bodyStr,
           name: "API",
           outerSpace: true,
-          baseColor: (result.error) ? chalk.red : chalk.green,
+          baseColor: chalk.green,
           borderChar: "-",
           borderCharLength: -1
         });
       }
     })
     .catch(error => {
-      if(showError) console.log(error);
+      result = error.response.data;
+      if(showError) {
+        logger.logByOptions({ //error
+          message: "URL: " + chalk.underline.bold(url) +
+          "\nMethod: " + chalk.underline.bold(method) +
+          "\nRequest duration: " + chalk.underline.bold((new Date().getTime() - responseStartDate)) + "ms" +
+          "\nHeaders: " + chalk.underline.bold(Object.entries(headers).length) +
+          "\nBody: " + bodyStr,
+          name: "API Error",
+          outerSpace: true,
+          baseColor: chalk.red,
+          borderChar: "-",
+          borderCharLength: -1
+        });
+      }
+
+      if(showDetailedError) {
+        console.error(error); //detailed error
+      }
     });
 
     return result;
