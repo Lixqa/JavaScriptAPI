@@ -11,8 +11,6 @@ async function sendApi(parameters, options = {}) {
     let showError = options.showError || true;
     let showDetailedError = options.showDetailedError || false;
 
-    console.log(showError, showDetailedError);
-
     if(url == null) {
       logger.logByOptions({
         message: "No url, use url: \"YOUR URL\"",
