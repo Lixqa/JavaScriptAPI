@@ -8,8 +8,8 @@ async function sendApi(parameters, options = {}) {
     let headers = parameters.headers || {};
     let body = (parameters.body) ? JSON.stringify(parameters.body) : null;
 
-    let showError = options.showError || true;
-    let showDetailedError = options.showDetailedError || false;
+    let showError = (options.showError == null) ? true : options.showError;
+    let showDetailedError = (options.showDetailedError == null) ? false : options.showDetailedError;
 
     if(url == null) {
       logger.logByOptions({

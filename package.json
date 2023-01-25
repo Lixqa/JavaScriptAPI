@@ -1,6 +1,6 @@
 {
   "name": "lixqajsapi",
-  "version": "1.0.28",
+  "version": "1.0.33",
   "description": "Javascript Api for LixqaApi",
   "main": "src/module.js",
   "scripts": {
