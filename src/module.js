@@ -8,6 +8,7 @@ async function sendApi(parameters, options = {}) {
     let headers = parameters.headers || {};
     let body = (parameters.body) ? JSON.stringify(parameters.body) : null;
 
+    let showOutput = (options.showOutput == null) ? true : options.showOutput;
     let showError = (options.showError == null) ? true : options.showError;
     let showDetailedError = (options.showDetailedError == null) ? false : options.showDetailedError;
 
@@ -35,38 +36,40 @@ async function sendApi(parameters, options = {}) {
     .then(response => {
       result = response.data;
 
-      if(parameters.url.includes("api.lixqa.de")) {
-        logger.logByOptions({ //only compatible with lixqa api
-          message: "Message: " + chalk.underline.bold(result?.message) +
-          "\nName: " + chalk.underline.bold(result?.endpoint?.name) +
-          "\nRequest duration: " + chalk.underline.bold((new Date().getTime() - responseStartDate)) + "ms" +
-          "\nIntern handle duration: " + chalk.underline.bold(result?.duration) + "ms" +
-          "\nMethod: " + chalk.underline.bold(result?.method) +
-          "\nHeaders: " + chalk.underline.bold(Object.entries(headers).length) +
-          "\nBody: " + bodyStr,
-          name: "API",
-          outerSpace: true,
-          baseColor: (result.error) ? chalk.red : chalk.green,
-          borderChar: "-",
-          borderCharLength: -1
-        });
-      } else {
-        logger.logByOptions({ //others
-          message: "URL: " + chalk.underline.bold(url) +
-          "\nMethod: " + chalk.underline.bold(method) +
-          "\nRequest duration: " + chalk.underline.bold((new Date().getTime() - responseStartDate)) + "ms" +
-          "\nHeaders: " + chalk.underline.bold(Object.entries(headers).length) +
-          "\nBody: " + bodyStr,
-          name: "API",
-          outerSpace: true,
-          baseColor: chalk.green,
-          borderChar: "-",
-          borderCharLength: -1
-        });
+      if(showOutput) {
+        if(parameters.url.includes("api.lixqa.de")) {
+          logger.logByOptions({ //only compatible with lixqa api
+            message: "Message: " + chalk.underline.bold(result?.message) +
+            "\nName: " + chalk.underline.bold(result?.endpoint?.name) +
+            "\nRequest duration: " + chalk.underline.bold((new Date().getTime() - responseStartDate)) + "ms" +
+            "\nIntern handle duration: " + chalk.underline.bold(result?.duration) + "ms" +
+            "\nMethod: " + chalk.underline.bold(result?.method) +
+            "\nHeaders: " + chalk.underline.bold(Object.entries(headers).length) +
+            "\nBody: " + bodyStr,
+            name: "API",
+            outerSpace: true,
+            baseColor: (result.error) ? chalk.red : chalk.green,
+            borderChar: "-",
+            borderCharLength: -1
+          });
+        } else {
+          logger.logByOptions({ //others
+            message: "URL: " + chalk.underline.bold(url) +
+            "\nMethod: " + chalk.underline.bold(method) +
+            "\nRequest duration: " + chalk.underline.bold((new Date().getTime() - responseStartDate)) + "ms" +
+            "\nHeaders: " + chalk.underline.bold(Object.entries(headers).length) +
+            "\nBody: " + bodyStr,
+            name: "API",
+            outerSpace: true,
+            baseColor: chalk.green,
+            borderChar: "-",
+            borderCharLength: -1
+          });
+        }
       }
     })
     .catch(error => {
-      result = error.response.data;
+      result = error?.response?.data;
       if(showError) {
         logger.logByOptions({ //error
           message: "URL: " + chalk.underline.bold(url) +
