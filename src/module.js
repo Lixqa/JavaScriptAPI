@@ -35,6 +35,7 @@ async function sendApi(parameters, options = {}) {
     })
     .then(response => {
       result = response.data;
+      result.reqDuration = (new Date().getTime() - responseStartDate);
 
       if(showOutput) {
         if(parameters.url.includes("api.lixqa.de")) {
@@ -70,6 +71,8 @@ async function sendApi(parameters, options = {}) {
     })
     .catch(error => {
       result = error?.response?.data;
+      result.duration = (new Date().getTime() - responseStartDate);
+
       if(showError) {
         logger.logByOptions({ //error
           message: "URL: " + chalk.underline.bold(url) +
