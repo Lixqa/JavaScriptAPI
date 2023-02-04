@@ -71,7 +71,6 @@ async function sendApi(parameters, options = {}) {
     })
     .catch(error => {
       result = error?.response?.data;
-      result.duration = (new Date().getTime() - responseStartDate);
 
       if(showError) {
         logger.logByOptions({ //error
