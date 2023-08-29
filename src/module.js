@@ -21,6 +21,7 @@ async function sendApi(parameters, options = {}) {
     let method = parameters.method || ApiRequestMethod.GET;
     let headers = parameters.headers || {};
     let body = (parameters.body) ? JSON.stringify(parameters.body) : null;
+    let proxy = parameters.proxy || null;
 
     let showOutput = (options.showOutput == null) ? true : options.showOutput;
     let showError = (options.showError == null) ? true : options.showError;
@@ -45,7 +46,8 @@ async function sendApi(parameters, options = {}) {
       url: url,
       method: method,
       headers: headers,
-      data: body
+      data: body,
+      proxy: proxy
     })
     .then(response => {
       result = response.data;
