@@ -26,7 +26,7 @@ declare module 'lixqajsapi' {
         POST = "POST",
         DELETE = "DELETE",
         PUT = "PUT"
-    };
+    }
 
     export {
         sendApi,
